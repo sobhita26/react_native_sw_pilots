@@ -1,0 +1,6 @@
+module Pods_react_native_sw_pilots {
+  umbrella header "Pods-react_native_sw_pilots-umbrella.h"
+
+  export *
+  module * { export * }
+}
