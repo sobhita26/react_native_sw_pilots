@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import configureStore from './store/configureStore';
 import LoginScreen from './src/container/LoginScreen/LoginScreen';
@@ -13,16 +14,32 @@ const Stack = createNativeStackNavigator();
 const RNRedux = () => {
   const TabsNavWithParams = props => <TabsNav {...props} />;
 
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+useEffect(() => {
+  async function fetchUserLoginStatus() {
+    const value = await AsyncStorage.getItem('loginStatus');
+    if  (value) {
+      setIsUserLoggedIn(true);
+    } else {
+      setIsUserLoggedIn(false);
+    }
+  }
+  fetchUserLoginStatus();
+}, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={'TabsView'}
           screenOptions={{
             headerShown: false,
           }}>
-          <Stack.Screen name="login" component={LoginScreen} />
-          <Stack.Screen component={TabsNavWithParams} name="TabsView" />
+             {!isUserLoggedIn ? (
+                <Stack.Screen name="login" component={LoginScreen} />
+                  ) : (
+                <Stack.Screen name="TabsView" component={TabsNavWithParams} />
+              )}
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
