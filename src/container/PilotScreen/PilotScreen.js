@@ -1,9 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import {SafeAreaView, Text, View, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native';
 
 import getPilotsApiAsync from '../../api/GetPilots';
 import styles from './Styles'; 
 
+
+const onFavoritePress = () => {
+  //TODO: add the data to Redux so we can render in Favorite tab
+}
 
 //TODO: This can be in a seperate component
 const Item = ({ data }) => (
@@ -12,7 +16,7 @@ const Item = ({ data }) => (
       <Text>Name: {data.name}</Text>
       <View style={styles.buttonView}>
           <TouchableOpacity
-            // onPress={onPress}
+            onPress={onFavoritePress}
             style={styles.appButtonContainer}>
             <Text style={styles.appButtonText}>Add Favorite</Text>
           </TouchableOpacity>
@@ -50,6 +54,18 @@ const PilotScreen = () => {
   );
   
   console.log('pilotData', pilotData);
+
+  //TODO: This can be a Modal on a seperate component
+  if (!pilotData) {
+    return (
+      <ActivityIndicator
+        animating={true}
+        color="#0000ff"
+        style={styles.indicator}
+        size="large"
+      />
+    );
+  }
 
   return (
     <SafeAreaView style={styles.main}>

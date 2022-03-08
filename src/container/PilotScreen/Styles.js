@@ -33,5 +33,9 @@ export default StyleSheet.create({
   },
   genderView: {
     paddingVertical: 5,
+  },
+  indicator: {
+    flex: 1,
+    alignItems: 'center',
   }
 });
